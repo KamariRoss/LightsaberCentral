@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Lightsaber_Central.Models
+namespace LightsaberCentral.Models
 {
     public partial class DatabaseContext : DbContext
     {
         public DbSet<Saber> Sabers { get; set; }
-
+        public DbSet<Location> Locations { get; set; }
         private string ConvertPostConnectionToConnectionString(string connection)
         {
             var _connection = connection.Replace("postgres://", String.Empty);
@@ -22,7 +23,7 @@ namespace Lightsaber_Central.Models
             {
                 var envConn = Environment.GetEnvironmentVariable("DATABASE_URL");
                 //#error Update this connection string to point to your own database.
-                var conn = "server=localhost;database=Lightsaber_CentralDatabase";
+                var conn = "server=localhost;database=LightsaberCentralDatabase";
                 if (envConn != null)
                 {
                     conn = ConvertPostConnectionToConnectionString(envConn);

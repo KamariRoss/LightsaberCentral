@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
+using LightsaberCentral.Models;
 
-namespace Lightsaber_Central.Models
+namespace LightsaberCentral.Models
 {
     public class Saber
     {
@@ -18,6 +20,6 @@ namespace Lightsaber_Central.Models
         public double Price { get; set; }
         //DateOrdered
         public DateTime DateOrdered { get; set; }
-
+        public List<SaberLocations> SaberLocationss { get; set; } = new List<SaberLocations>();
     }
 }

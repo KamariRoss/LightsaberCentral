@@ -11,9 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Lightsaber_Central.Models;
+using LightsaberCentral.Models;
 
-namespace Lightsaber_Central
+namespace LightsaberCentral
 {
     public class Startup
     {

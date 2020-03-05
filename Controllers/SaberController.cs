@@ -2,23 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lightsaber_Central.Models;
+using LightsaberCentral.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace Lightsaber_Central.Controllers
+namespace LightsaberCentral.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SaberController : ControllerBase
     {
-
-        public SaberController(DatabaseContext db)
-        {
-            this.db = db;
-
-        }
         public DatabaseContext db { get; set; } = new DatabaseContext();
+
         [HttpPost]
         public Saber CreateLightsaber(Saber item)
         {
@@ -74,7 +70,17 @@ namespace Lightsaber_Central.Controllers
             return Ok(sabers);
 
         }
-        [HttpPut]
+        [HttpPut("{id}/update")]
+        // Create a PUT endpoint that allows a client to update an item
+        public Saber UpdateSabers(int id, Saber newData)
+
+        {
+            newData.Id = id;
+            db.Entry(newData).State = EntityState.Modified;
+            db.SaveChanges();
+            return newData;
+        }
+
 
     }
 }
