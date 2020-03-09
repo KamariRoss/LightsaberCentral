@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using LightsaberCentral.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LightsaberCentral.Controllers
 {
@@ -27,6 +28,29 @@ namespace LightsaberCentral.Controllers
         {
             var findLocation = db.Locations.OrderBy(p => p.Id);
             return findLocation.ToList();
+        }
+        [HttpDelete("{Id}")]
+        public Location DeleteYourSaber(int id)
+        {
+            // PUT /api/sabers/{id}/play, This should find the saber by id,
+            var locate = db.Locations.FirstOrDefault(p => p.Id == id);
+            db.Locations.Remove(locate);
+            db.SaveChanges();
+            return locate;
+        }
+        [HttpPut("{id}/{Locate}/update")]
+        public Location UpdateLocation(int id, Location newData, int Locate)
+
+        {
+            var itemlocation = new SaberLocation()
+            {
+                LocationId = Locate
+            };
+            newData.SaberLocations.Add(itemlocation);
+            newData.Id = id;
+            db.Entry(newData).State = EntityState.Modified;
+            db.SaveChanges();
+            return newData;
         }
     }
 }

@@ -20,6 +20,7 @@ namespace LightsaberCentral.Models
         public double Price { get; set; }
         //DateOrdered
         public DateTime DateOrdered { get; set; }
-        public List<SaberLocations> SaberLocationss { get; set; } = new List<SaberLocations>();
+        public List<SaberLocation> SaberLocations { get; set; } = new List<SaberLocation>();
+
     }
 }

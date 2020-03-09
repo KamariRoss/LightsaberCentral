@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LightsaberCentral.Migrations
 {
-    public partial class ResetDatabase : Migration
+    public partial class FreshStart : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,8 @@ namespace LightsaberCentral.Migrations
                     Description = table.Column<string>(nullable: true),
                     NumberInStock = table.Column<int>(nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    DateOrdered = table.Column<DateTime>(nullable: false)
+                    DateOrdered = table.Column<DateTime>(nullable: false),
+                    LocationId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,25 +43,25 @@ namespace LightsaberCentral.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SaberLocations",
+                name: "SaberLocation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SaberId = table.Column<int>(nullable: false),
-                    LocationId = table.Column<int>(nullable: false)
+                    LocationId = table.Column<int>(nullable: false),
+                    SaberId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SaberLocations", x => x.Id);
+                    table.PrimaryKey("PK_SaberLocation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SaberLocations_Locations_LocationId",
+                        name: "FK_SaberLocation_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SaberLocations_Sabers_SaberId",
+                        name: "FK_SaberLocation_Sabers_SaberId",
                         column: x => x.SaberId,
                         principalTable: "Sabers",
                         principalColumn: "Id",
@@ -68,20 +69,20 @@ namespace LightsaberCentral.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaberLocations_LocationId",
-                table: "SaberLocations",
+                name: "IX_SaberLocation_LocationId",
+                table: "SaberLocation",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SaberLocations_SaberId",
-                table: "SaberLocations",
+                name: "IX_SaberLocation_SaberId",
+                table: "SaberLocation",
                 column: "SaberId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SaberLocations");
+                name: "SaberLocation");
 
             migrationBuilder.DropTable(
                 name: "Locations");

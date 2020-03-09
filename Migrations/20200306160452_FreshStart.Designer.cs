@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LightsaberCentral.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200305195323_ResetDatabase")]
-    partial class ResetDatabase
+    [Migration("20200306160452_FreshStart")]
+    partial class FreshStart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace LightsaberCentral.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<int?>("LocationId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -72,7 +75,7 @@ namespace LightsaberCentral.Migrations
                     b.ToTable("Sabers");
                 });
 
-            modelBuilder.Entity("LightsaberCentral.Models.SaberLocations", b =>
+            modelBuilder.Entity("LightsaberCentral.Models.SaberLocation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,10 +94,10 @@ namespace LightsaberCentral.Migrations
 
                     b.HasIndex("SaberId");
 
-                    b.ToTable("SaberLocations");
+                    b.ToTable("SaberLocation");
                 });
 
-            modelBuilder.Entity("LightsaberCentral.Models.SaberLocations", b =>
+            modelBuilder.Entity("LightsaberCentral.Models.SaberLocation", b =>
                 {
                     b.HasOne("LightsaberCentral.Models.Location", "Location")
                         .WithMany("SaberLocations")

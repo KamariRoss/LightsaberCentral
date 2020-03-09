@@ -3,15 +3,17 @@ using System;
 using LightsaberCentral.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LightsaberCentral.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20200306163746_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +91,7 @@ namespace LightsaberCentral.Migrations
 
                     b.HasIndex("SaberId");
 
-                    b.ToTable("SaberLocations");
+                    b.ToTable("SaberLocation");
                 });
 
             modelBuilder.Entity("LightsaberCentral.Models.SaberLocation", b =>

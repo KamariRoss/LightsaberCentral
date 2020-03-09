@@ -15,12 +15,21 @@ namespace LightsaberCentral.Controllers
     {
         public DatabaseContext db { get; set; } = new DatabaseContext();
 
-        [HttpPost]
-        public Saber CreateLightsaber(Saber item)
+        [HttpPost("{Id}")]
+        public Saber CreateLightsaber(Saber item, int Id)
         {
             // Add a light saber
+            // the id in saberlocations is the same as the saber id
+
+            // assign the location(s) to the saber
+            var itemlocation = new SaberLocation()
+            {
+                LocationId = Id
+            };
+            item.SaberLocations.Add(itemlocation);
             db.Sabers.Add(item);
             db.SaveChanges();
+            item.SaberLocations = null;
             return item;
         }
         [HttpDelete("{Id}")]
@@ -32,25 +41,32 @@ namespace LightsaberCentral.Controllers
             db.SaveChanges();
             return saber;
         }
-        [HttpGet("{Id}")]
-        public Saber GetSaber(int id)
+        [HttpGet("{Id}/{Location}")]
+        public Saber GetSaber(int id, int Location)
         {
             //query for all sabers
             // sort them by Id 
-            var sabers = db.Sabers.FirstOrDefault(p => p.Id == id);
+            var sabers = db.Sabers.Include(b => b.SaberLocations.Where(b => b.LocationId == Location).ToList());
+            var singleSaber = sabers.FirstOrDefault(p => p.Id == id);
             // return the list 
-            return sabers;
+            return singleSaber;
         }
-        [HttpGet("All")]
-        public List<Saber> GetAllInvenetory()
+        [HttpGet("All/{Location}")] //
+        public List<Saber> GetAllInvenetory(int Location)
         {
-            // query for all the sabers
-            // sort them by name
-            var sabers = db.Sabers.OrderBy(p => p.Name);
+            // find the location
+            // join to middle table
+            // pull out all sabers that have the location id equal to location
+            //var sabers = db.Sabers.OrderBy(p => p.Name);
+
+            var sabers = db.Sabers.Include(b => b.SaberLocations.Select(b => b.LocationId == Location));
+            //var showSabers = sabers.OrderByDescending(s => s.Name);
+            // filter
+            // this  joins the table
             // return the sorted items  
             return sabers.ToList();
         }
-        [HttpGet("OUT")]
+        [HttpGet("Out")]
         // Create a GET endpoint to get all items that are out of stock
         public List<Saber> OutOfStock()
         {
@@ -59,9 +75,24 @@ namespace LightsaberCentral.Controllers
             // return a list of sabers with only 0
             return sabers.ToList();
         }
+        [HttpGet("Out/{Id}")]
+        // Create a GET endpoint to get all items that are out of stock
+        public List<Saber> OutOfStockLocation(int Id)
+        {
+
+            // find all sabers where numberInStock == 0
+            var sabers = db.Sabers.Include(b => b.SaberLocations.Where(s => s.LocationId == Id));
+            var saberGone = sabers.Where(p => p.NumberInStock == 0);
+            //var missingSaber = db.Locations.Where(p => p.Id == Id);
+            //var missingStock = missingSaber.Where(p => p.n)
+            // return a list of sabers with only 0
+            return sabers.ToList();
+        }
         [HttpGet("Sku/{sku}")]
         public ActionResult FindSKU(string sku)
         {
+            //var sabers = db.Sabers.Include(b => b.SaberLocations.Where(s => s.LocationId == Location));
+
             var sabers = db.Sabers.Where(p => p.SKU == sku);
             if (sabers == null)
             {
@@ -70,14 +101,20 @@ namespace LightsaberCentral.Controllers
             return Ok(sabers);
 
         }
-        [HttpPut("{id}/update")]
+        [HttpPut("Update/{id}/{Locate}")]
         // Create a PUT endpoint that allows a client to update an item
-        public Saber UpdateSabers(int id, Saber newData)
+        public Saber UpdateSabers(int id, Saber newData, int Locate)
 
         {
+            var itemlocation = new SaberLocation()
+            {
+                LocationId = Locate
+            };
             newData.Id = id;
+            newData.SaberLocations.Add(itemlocation);
             db.Entry(newData).State = EntityState.Modified;
             db.SaveChanges();
+            newData.SaberLocations = null;
             return newData;
         }
 

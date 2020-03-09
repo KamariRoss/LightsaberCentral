@@ -10,6 +10,7 @@ namespace LightsaberCentral.Models
     {
         public DbSet<Saber> Sabers { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<SaberLocation> SaberLocations { get; set; }
         private string ConvertPostConnectionToConnectionString(string connection)
         {
             var _connection = connection.Replace("postgres://", String.Empty);

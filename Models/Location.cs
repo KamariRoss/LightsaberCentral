@@ -9,6 +9,6 @@ namespace LightsaberCentral.Models
         public string Address { get; set; }
         public string ManagerName { get; set; }
         public int PhoneNumber { get; set; }
-        public List<SaberLocations> SaberLocations { get; set; } = new List<SaberLocations>();
+        public List<SaberLocation> SaberLocations { get; set; } = new List<SaberLocation>();
     }
 }
