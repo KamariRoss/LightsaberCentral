@@ -18,7 +18,7 @@ namespace LightsaberCentral.Controllers
         [HttpPost]
         public Location CreateStore(Location item)
         {
-            // Add a light saber
+            // Add a store
             db.Locations.Add(item);
             db.SaveChanges();
             return item;
@@ -32,7 +32,6 @@ namespace LightsaberCentral.Controllers
         [HttpDelete("{Id}")]
         public Location DeleteYourSaber(int id)
         {
-            // PUT /api/sabers/{id}/play, This should find the saber by id,
             var locate = db.Locations.FirstOrDefault(p => p.Id == id);
             db.Locations.Remove(locate);
             db.SaveChanges();

@@ -20,7 +20,6 @@ namespace LightsaberCentral.Controllers
         {
             // Add a light saber
             // the id in saberlocations is the same as the saber id
-
             // assign the location(s) to the saber
             var itemlocation = new SaberLocation()
             {
@@ -42,29 +41,40 @@ namespace LightsaberCentral.Controllers
             return saber;
         }
         [HttpGet("{Id}/{Location}")]
-        public Saber GetSaber(int id, int Location)
+        public ActionResult GetSaber(int id, int Location)
         {
             //query for all sabers
             // sort them by Id 
-            var sabers = db.Sabers.Include(b => b.SaberLocations.Where(b => b.LocationId == Location).ToList());
-            var singleSaber = sabers.FirstOrDefault(p => p.Id == id);
+            // var viewAllSabers = SaberLocation()
+
+            var saberlocations = db.SaberLocations
+                    .Include(i => i.Saber)
+                    .Where(w => w.LocationId == Location)
+                    .Where(r => r.SaberId == id)
+                    .Select(s => s.Saber).ToList();
+            return Ok(saberlocations);
             // return the list 
-            return singleSaber;
         }
-        [HttpGet("All/{Location}")] //
-        public List<Saber> GetAllInvenetory(int Location)
+        [HttpGet("All/{Location}")]
+        public ActionResult GetAllInvenetory(int Location)
         {
             // find the location
             // join to middle table
             // pull out all sabers that have the location id equal to location
-            //var sabers = db.Sabers.OrderBy(p => p.Name);
+            // var sabers = db.Sabers.OrderBy(p => p.Name);
 
-            var sabers = db.Sabers.Include(b => b.SaberLocations.Select(b => b.LocationId == Location));
-            //var showSabers = sabers.OrderByDescending(s => s.Name);
+            // var sabers = db.Sabers.Include(b => b.SaberLocations.Where(c => c.LocationId == Location));
+            // var showSabers = sabers.OrderByDescending(s => s.Name);
             // filter
             // this  joins the table
             // return the sorted items  
-            return sabers.ToList();
+            // return showSabers.ToList();
+
+            var saberlocations = db.SaberLocations
+                    .Include(i => i.Saber)
+                    .Where(w => w.LocationId == Location)
+                    .Select(s => s.Saber).ToList();
+            return Ok(saberlocations);
         }
         [HttpGet("Out")]
         // Create a GET endpoint to get all items that are out of stock
@@ -77,16 +87,16 @@ namespace LightsaberCentral.Controllers
         }
         [HttpGet("Out/{Id}")]
         // Create a GET endpoint to get all items that are out of stock
-        public List<Saber> OutOfStockLocation(int Id)
+        public ActionResult OutOfStockLocation(int Id)
         {
 
             // find all sabers where numberInStock == 0
-            var sabers = db.Sabers.Include(b => b.SaberLocations.Where(s => s.LocationId == Id));
-            var saberGone = sabers.Where(p => p.NumberInStock == 0);
-            //var missingSaber = db.Locations.Where(p => p.Id == Id);
-            //var missingStock = missingSaber.Where(p => p.n)
+            var saberlocations = db.SaberLocations
+                                .Include(i => i.Saber)
+                                .Where(w => w.LocationId == Id)
+                                .Select(s => s.Saber).ToList();
+            return Ok(saberlocations);
             // return a list of sabers with only 0
-            return sabers.ToList();
         }
         [HttpGet("Sku/{sku}")]
         public ActionResult FindSKU(string sku)

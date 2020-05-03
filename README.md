@@ -1,28 +1,41 @@
-# Defualt Template for SDG .NET Course
+Don't lose track!
+Now that we have new API skills, we want to create an API to help our favorite store keep track of their inventory. This API will be able to let users add, update, delete, and search for items.
 
-This is the default template for a simple .NET Core Web API. This template has:
+Objectives
+Create an API that can CRUD against a Database
+practice creating ASP.NET Web API endpoints
+practice EF Core.
+Working with docker
+Requirements
+Create a simple API that has a handful of endpoints to manage data
+The API should be using Web API Controllers, Ef Core, and Postgres database
+deploy your app to Heroku
+Explorer Mode
+Create a new sdg-api project using the dotnet CLI, have fun with the name and what items the shop sells.
 
-- CORS Enabled
-- Swagger
-- Postgres & EF Core
-- Ready for Docker Deployment
+Create a Model for an item in the shop. This will be your database table structure.
 
-## TODO:
+The Item should have at least
 
-- Make this in into a template
+Id
+SKU
+Name
+Short description
+NumberInStock
+Price
+DateOrdered
+Create a GET endpoint for all items in your inventory
 
-to use:
+Create a GET endpoint for each item
 
-- [ ] Update your database name in `DatabaseContext.cs`
+Create a POST endpoint that allows a client to add an item to the inventory
 
-to Deploy to heroku:
+Create a PUT endpoint that allows a client to update an item
 
-- [ ] create a web app on heroku, make sure to have the CLI downloaded, installed, logged in and be logged into the container via heroku.
-- [ ] Update your `dockerfile` to use your `*.dll` file instead of `dotnet-sdg-template.dll`
-- [ ] Update the deploy script:
-  - [ ] change `sdg-template-image` to `your-project-name-image`
-  - [ ] change `heroku-web-app` to your web app name on heroku
+Create a DELETE endpoint that allows a client to delete an item
 
-## PROTIP:
+Create a GET endpoint to get all items that are out of stock
 
-When you are complete with the project and have turned it in to your instructor, update this read me with details about the assignment.
+Create a GET endpoint that allows them to search for an item based on SKU
+
+Deploy your app to heroku
